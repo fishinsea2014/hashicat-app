@@ -1,0 +1,11 @@
+{
+    "name": "Message_board",
+    "scripts": {
+        "start": "node server_message_board.js"
+    },
+    "dependencies": {
+        "connect": "*",
+        "body-parser": "*",
+        "serve-static": "*"
+    }
+}
