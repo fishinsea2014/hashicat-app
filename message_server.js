@@ -7,10 +7,11 @@
 var connect = require('connect');  
 var bodyParser = require('body-parser');   
 var serveStatic = require('serve-static');   
+var mID = -1;
 
 // Use a map to store the message data
 let map = new Map();
-map.set('Jason','Hello from Jason');
+map.set(mID, ['Jason', 'Hello from Jason']);
 
 //Convert a map to an object
 function strMapToObj(strMap) {
@@ -47,19 +48,48 @@ var app = connect()
 
     })
     .use('/list/add', function(req,res,next){
+        mID++;
         console.log(req.body);
-        map.set(req.body.name, req.body.message);
+        map.set(mID, [req.body.name, req.body.message]);
         console.log('map: ', map);
-        var data = {"code":200, "msg":"success"};
+        let data = {"code":200, "msg":"success"};
         res.end(JSON.stringify(data));
         next();
     })
     .use('/list/get', function(req, res, next) {
-        console.log('body of get',req.body);
-        console.log('body of res',res);
+        // console.log('body of get',req.body);
+        // console.log('body of res',res);
         res.end(strMapToJson(map));
 		next();
-	})
+    })
+    .use('/list/delete', function(req,res,next){
+        console.log('Body of delete', req.body);
+        //TODO
+    })
+    .use('/list/deleteSelectedMsg', function(req, res, next) {
+        console.log('Delete selected messages', req.body);
+        let selectedMsg = req.body;
+        for (let i=0; i<selectedMsg.length; i++) {
+            let del = map.delete(parseInt(selectedMsg[i]));
+            console.log('delete is ok? ',del);
+        }
+        console.log('After delete selected msg', map);
+        let data = {"code":200, "msg":"success"};
+        res.end(JSON.stringify(data));
+        next();
+    })
+    .use('/list/editAMsg', function(req, res, next) {
+        console.log('Edit a messages', req.body);
+        // let selectedMsg = req.body;
+        let [id, name, msg] = req.body; 
+        map.delete(parseInt(id));
+        map.set(parseInt(id), [name, msg]);
+        console.log('After edit a msg', map);
+        let data = {"code":200, "msg":"success"};
+        res.end(JSON.stringify(data));
+        next();
+
+    })
     .listen(3000);
     
 console.log('Message baord server started on port 3000');
