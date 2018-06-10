@@ -24,6 +24,7 @@ var messageBoard = {
 
     //Edit an message
     $(".list-group").on('click', ".editbtn", function(event){
+      $(".panel-editAMsg").hide().show();
       let msgID = $(this).siblings(".msgID").text();
       let publisher = $(this).siblings(".publisher").text();
       let msgContent = $(this).siblings(".msgContent").text();
@@ -34,9 +35,10 @@ var messageBoard = {
       $(".panel-editAMsg .editSubmit").click( () => {
         messageBoard.getJSON('/list/editAMsg', 'put', [msgID,$(".panel-editAMsg .editPublisher").val(),$(".panel-editAMsg .editMessageContent").val()]);
         messageBoard.listMessage();
-        [msgID, publisher, msgContent] = [null,null,null];
-        $(".panel-editAMsg .editPublisher").val("");
-        $(".panel-editAMsg .editMessageContent").val("");
+        // [msgID, publisher, msgContent] = [null,null,null];
+        // $(".panel-editAMsg .editPublisher").val("");
+        // $(".panel-editAMsg .editMessageContent").val("");
+        $(".panel-editAMsg").hide();
 
       })
     });

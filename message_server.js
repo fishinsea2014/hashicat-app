@@ -88,7 +88,6 @@ var app = connect()
         let data = {"code":200, "msg":"success"};
         res.end(JSON.stringify(data));
         next();
-
     })
     .listen(3000);
     
